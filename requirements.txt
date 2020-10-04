@@ -1,0 +1,5 @@
+flask
+flask_wtf
+email_validator
+flask_googlemaps
+flask_sqlalchemy
