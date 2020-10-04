@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from food import app, db, bcrypt
-from food.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from food.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from food.models import User, Post
 from flask_googlemaps import Map
 from flask_login import login_user, current_user, logout_user, login_required
@@ -21,29 +21,12 @@ locations = [
         "infobox": "<b>Hello World from other place</b>",
     },
 ]
-posts = [
-    {
-        "restaurant": "Olives",
-        "title": "Pizzas for nurses in County Hospital",
-        "content": "Help us raise money to send 100 pizzas to nurses in the County Hospital.",
-        "goal": 40,
-        "date_posted": "October 3, 2020",
-        "image": "https://olivesprinceton.com/wp-content/uploads/2017/04/olives-storefront.jpg"
-    },
-    {
-        "restaurant": "Tacoria",
-        "title": "Tacos for kids in orphanage",
-        "content": "Help us raise money to send 500 tacos to 6 orphanages in the district.",
-        "goal": 100,
-        "date_posted": "October 5, 2020",
-        "image": "https://tacoria.com/wp-content/uploads/2018/10/TacoriaPrinceton6-11-2018%C2%A9DanielNydickPhotography7of97.jpg"
-    },
-]
 
 
 @app.route("/")  # home page
 @app.route("/home")
 def home():
+    posts = Post.query.all()
     return render_template("home.html", posts=posts, title="Home")
 
 
@@ -131,3 +114,20 @@ def account():
     return render_template(
         "account.html", title="Account", image_file=image_file, form=form
     )
+
+
+@app.route("/post/new", methods=["GET", "POST"])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(
+            title=form.title.data,
+            content=form.content.data,
+            author=current_user,
+        )
+        db.session.add(post)
+        db.session.commit()
+        flash("Your post has been created!", "success")
+        return redirect(url_for("home"))
+    return render_template("create_post.html", title="New Post", form=form)
