@@ -83,3 +83,13 @@ class PostForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     content = TextAreaField("Content", validators=[DataRequired()])
     submit = SubmitField("Post")
+
+
+class OrderForm(FlaskForm):
+    amount = IntegerField("Amount", validators=[DataRequired()])
+    submit = SubmitField("Donate")
+
+          
+                
+
+     
