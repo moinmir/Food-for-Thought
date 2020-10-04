@@ -10,15 +10,15 @@ from flask_login import login_user, current_user, logout_user, login_required
 locations = [
     {
         "icon": "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-        "lat": 37.4419,
-        "lng": -122.1419,
-        "infobox": "<b>Hello World</b>",
+        "lat": 40.3500,
+        "lng": -74.6591,
+        "infobox": "<b>Tacoria</b>",
     },
     {
         "icon": "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-        "lat": 37.4300,
-        "lng": -122.1400,
-        "infobox": "<b>Hello World from other place</b>",
+        "lat": 40.3504,
+        "lng": -74.6602,
+        "infobox": "<b>Mamoun's Falafel</b>",
     },
 ]
 
@@ -34,7 +34,7 @@ def home():
 @app.route("/map")
 def mapview():
     # creating a map in the view
-    sndmap = Map(identifier="sndmap", lat=37.4419, lng=-122.1419, markers=locations)
+    sndmap = Map(identifier="sndmap", lat=40.35, lng=-74.66, markers=locations)
     return render_template("map.html", sndmap=sndmap)
 
 
