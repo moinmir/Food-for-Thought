@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-botton mb-4">Account Info</legend>
@@ -29,13 +29,10 @@
                 </div>
                 {% else %} {{ form.email(class="form-control form-control-lg") }} {% endif %}
             </div>
-
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
-            </div>
-
         </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
     </form>
-
 </div>
 {% endblock content %}
