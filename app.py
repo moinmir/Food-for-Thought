@@ -1,9 +1,16 @@
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
+from flask_googlemaps import GoogleMaps, Map
 
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "7501d06b12422d9792968f951c600b32"
+
+# you can set key as config
+app.config['GOOGLEMAPS_KEY'] = "AIzaSyAOhs8UoLOWiqJwDXie6Igf8TJWw-IQkQM"
+
+# Initialize the extension
+GoogleMaps(app)
 
 posts = [
     {
@@ -22,12 +29,37 @@ posts = [
     },
 ]
 
+#THIS HAS TO BE ATTACHED TO DATABASE
+locations = [
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             'lat': 37.4419,
+             'lng': -122.1419,
+             'infobox': "<b>Hello World</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+             'lat': 37.4300,
+             'lng': -122.1400,
+             'infobox': "<b>Hello World from other place</b>"
+          }
+        ]
 
 @app.route("/")  # home page
 @app.route("/home")
 def home():
     return render_template("home.html", posts=posts, title="Home")
 
+@app.route("/map")
+def mapview():
+    # creating a map in the view
+    sndmap = Map(
+        identifier="sndmap",
+        lat=37.4419,
+        lng=-122.1419,
+        markers= locations
+    )
+    return render_template('map.html', sndmap=sndmap)
 
 @app.route("/about")  # home page
 def about():
