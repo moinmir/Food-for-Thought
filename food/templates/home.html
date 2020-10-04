@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block content %}
-<h1>Home Page</h1>
+<h1>Find Local Restaurants!</h1>
 {% for post in posts %}
 <article class="media content-section">
     <div class="media-body">
@@ -10,6 +10,7 @@
         <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
         <p class="article-content">{{ post.content }}</p>
         <p class="article-content">Goal = ${{ post.goal }}.</p>
+        <p class="article-content"><img src= {{post.image}} style="width:300px;height:200px;" /> </p>
     </div>
 </article>
 {% endfor %} {% endblock content %}
