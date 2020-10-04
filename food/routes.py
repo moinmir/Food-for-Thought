@@ -28,6 +28,7 @@ posts = [
         "content": "Help us raise money to send 100 pizzas to nurses in the County Hospital.",
         "goal": 40,
         "date_posted": "October 3, 2020",
+        "image": "https://olivesprinceton.com/wp-content/uploads/2017/04/olives-storefront.jpg"
     },
     {
         "restaurant": "Tacoria",
@@ -35,6 +36,7 @@ posts = [
         "content": "Help us raise money to send 500 tacos to 6 orphanages in the district.",
         "goal": 100,
         "date_posted": "October 5, 2020",
+        "image": "https://tacoria.com/wp-content/uploads/2018/10/TacoriaPrinceton6-11-2018%C2%A9DanielNydickPhotography7of97.jpg"
     },
 ]
 
