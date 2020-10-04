@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from food import app, db, bcrypt
-from food.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from food.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, OrderForm
 from food.models import User, Post
 from flask_googlemaps import Map
 from flask_login import login_user, current_user, logout_user, login_required
@@ -182,3 +182,21 @@ def user_posts(username):
         .order_by(Post.date_posted.desc())\
         .paginate(per_page=5, page=page)
     return render_template("user_posts.html", posts=posts, user=user)
+
+
+@app.route("/post/<int:post_id>/donate", methods=["GET", "POST"])
+@login_required
+def donate(post_id):
+    post = Post.query.get_or_404(post_id)
+    form = OrderForm()
+
+    if form.validate_on_submit():
+        post.author.orders = int(post.author.orders) + int(form.amount.data)
+        db.session.commit()
+        flash("Your donation has been sent!", "success")
+        return redirect(url_for("home"))
+
+    return render_template(
+        "make_donation.html", title="Donate", form=form
+    )
+
