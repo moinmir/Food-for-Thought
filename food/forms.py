@@ -23,7 +23,7 @@ from flask_login import current_user
 class RegistrationForm(FlaskForm):
 
     username = StringField(
-        "Username", validators=[DataRequired(), Length(min=6, max=15)]
+        "Username", validators=[DataRequired(), Length(min=4, max=15)]
     )
 
     email = StringField("Email", validators=[DataRequired(), Email()])
@@ -59,10 +59,11 @@ class LoginForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
 
     username = StringField(
-        "Username", validators=[DataRequired(), Length(min=6, max=15)]
+        "Username", validators=[DataRequired(), Length(min=4, max=15)]
     )
 
     email = StringField("Email", validators=[DataRequired(), Email()])
+    picture = FileField("Uptade Profile Picture", validators=[FileAllowed(['jpeg', 'png', 'jpg'])])
 
     submit = SubmitField("Update")
 
@@ -89,7 +90,23 @@ class OrderForm(FlaskForm):
     amount = IntegerField("Amount", validators=[DataRequired()])
     submit = SubmitField("Donate")
 
-          
+class RequestResetForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    submit = SubmitField("Request")
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError("No account with that email. You must register first.")
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField("Password", validators=[DataRequired()])
+    confirm_password = PasswordField(
+        "Confirm Password", validators=[DataRequired(), EqualTo("password")]
+    )
+    submit = SubmitField("Update Password")
+
                 
 
      
