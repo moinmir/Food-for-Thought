@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_googlemaps import GoogleMaps
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
@@ -19,16 +18,21 @@ app.config['MAIL_USERNAME'] = "officialfoodforthought@gmail.com"
 app.config['MAIL_PASSWORD'] = "food.for.thought"
 
 # Initialize the extensions
-maps = GoogleMaps(app)
 db = SQLAlchemy(app)
 mail = Mail(app)
 bcrypt = Bcrypt(app)
 
 login_manager = LoginManager(app)
-login_manager.login_view = "login"
+login_manager.login_view = "users.login"
 login_manager.login_message_category = "info"
 
+from food.users.routes import users
+from food.posts.routes import posts
+from food.main.routes import main
+from food.transactions.routes import transactions
 
 
-
-from food import routes
+app.register_blueprint(users)
+app.register_blueprint(posts)
+app.register_blueprint(main)
+app.register_blueprint(transactions)

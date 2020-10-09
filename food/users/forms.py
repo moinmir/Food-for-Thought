@@ -1,24 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import (
-    StringField,
-    PasswordField,
-    SubmitField,
-    BooleanField,
-    TextAreaField,
-    IntegerField,
-)
-from wtforms.validators import (
-    DataRequired,
-    Length,
-    EqualTo,
-    Email,
-    ValidationError,
-    NumberRange,
-)
-from food.models import User
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
-
+from food.models import User
 
 class RegistrationForm(FlaskForm):
 
@@ -79,17 +64,6 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError("Email already exists.")
 
-
-class PostForm(FlaskForm):
-    title = StringField("Title", validators=[DataRequired()])
-    content = TextAreaField("Content", validators=[DataRequired()])
-    submit = SubmitField("Post")
-
-
-class OrderForm(FlaskForm):
-    amount = IntegerField("Amount", validators=[DataRequired()])
-    submit = SubmitField("Donate")
-
 class RequestResetForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     submit = SubmitField("Request")
@@ -106,7 +80,3 @@ class ResetPasswordForm(FlaskForm):
         "Confirm Password", validators=[DataRequired(), EqualTo("password")]
     )
     submit = SubmitField("Update Password")
-
-                
-
-     
