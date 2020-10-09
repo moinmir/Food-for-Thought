@@ -28,11 +28,11 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
 
     from food.users.routes import users
-    from food.posts.routes import posts
+    from food.campaigns.routes import campaigns
     from food.main.routes import main
     from food.transactions.routes import transactions
     app.register_blueprint(users)
-    app.register_blueprint(posts)
+    app.register_blueprint(campaigns)
     app.register_blueprint(main)
     app.register_blueprint(transactions)
 

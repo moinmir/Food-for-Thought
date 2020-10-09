@@ -5,7 +5,7 @@ from food.models import User
 from flask_login import current_user
 
 
-class OrderForm(FlaskForm):
+class DonateForm(FlaskForm):
     amount = FloatField(
         "Amount",
         validators=[

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
 from food.models import User
@@ -17,8 +17,13 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField(
         "Confirm Password", validators=[DataRequired(), EqualTo("password")]
     )
+    urole = RadioField("User Type", choices=['Restaurant', 'Donor'])
 
     submit = SubmitField("Sign Up")
+
+    def validate_type(self, urole):
+        if not urole:
+            raise ValidationError("Please select user type.")
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
@@ -49,8 +54,13 @@ class UpdateAccountForm(FlaskForm):
 
     email = StringField("Email", validators=[DataRequired(), Email()])
     picture = FileField("Uptade Profile Picture", validators=[FileAllowed(['jpeg', 'png', 'jpg'])])
+    urole = RadioField("User Type", choices=['Restaurant', 'Donor'])
 
     submit = SubmitField("Update")
+
+    def validate_type(self, urole):
+        if not urole:
+            raise ValidationError("Please select user type.")
 
     def validate_username(self, username):
         if username.data != current_user.username:
