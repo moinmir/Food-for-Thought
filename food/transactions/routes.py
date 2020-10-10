@@ -12,10 +12,11 @@ transactions = Blueprint('transactions', __name__)
 def donate(campaign_id):
     campaign = Campaign.query.get_or_404(campaign_id)
     form = DonateForm()
-
+    
     if form.validate_on_submit():
         order = Transaction(amount=form.amount.data, donor=current_user, campaign=campaign)
         db.session.add(order)
+        campaign.raised = int(campaign.raised) + int(form.amount.data)
         db.session.commit()
         flash("Your donation has been sent!", "success")
         return redirect(url_for('main.home'))

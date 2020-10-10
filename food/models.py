@@ -47,6 +47,7 @@ class Campaign(db.Model):
     content = db.Column(db.Text, nullable=False)
     goal = db.Column(db.Integer, nullable=False, default=0)
     image_file = db.Column(db.String(20), nullable=False, default="default_campaign.jpg")
+    raised = db.Column(db.Integer, nullable=False, default=0)
     
     transactions = db.relationship("Transaction", backref="campaign", lazy=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)

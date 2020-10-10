@@ -6,18 +6,20 @@
             <a class="mr-2" href="{{ url_for('users.user_campaigns', username = campaign.owner.username) }}">{{ campaign.owner.username }}</a>
             <small class="text-muted">{{ campaign.date_posted.strftime('%Y-%m-%d') }}</small> {% if campaign.owner == current_user %}
             <div>
-                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('campaigns.updatecampaign', campaign_id=campaign.id) }}">Update</a>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('campaigns.update_campaign', campaign_id=campaign.id) }}">Update</a>
                 <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                <p class="text-secondary">Raised ${{ current_user.orders }}</p>
+                <p class="text-secondary">Raised ${{ campaign.raised }}</p>
             </div>
             {% else %}
             <div>
+                <p class="text-secondary"><b>Campaign Goal: ${{ campaign.goal}}</b></p>
                 <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('transactions.donate', campaign_id=campaign.id) }}">Donate</a>
             </div>
             {% endif %}
         </div>
         <h2 class="article-title">{{ campaign.title }}</h2>
         <p class="article-content">{{ campaign.content }}</p>
+
     </div>
 </article>
 <!-- Modal -->
