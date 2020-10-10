@@ -18,8 +18,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default="default.jpg")
     password = db.Column(db.String(60), nullable=False)
-    orders = db.Column(db.Integer, default=0)
-    posts = db.relationship("Post", backref="author", lazy=True)
+    urole = db.Column(db.String(60), nullable=False)
+
+    transactions = db.relationship("Transaction", backref="donor", lazy=True)
+    campaigns = db.relationship("Campaign", backref="owner", lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -35,18 +37,38 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}', '{self.orders}')"
+        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 
-class Post(db.Model):
+class Campaign(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
+    goal = db.Column(db.Integer, nullable=False, default=0)
+    image_file = db.Column(db.String(20), nullable=False, default="default_campaign.jpg")
+    raised = db.Column(db.Integer, nullable=False, default=0)
+    
+    transactions = db.relationship("Transaction", backref="campaign", lazy=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
+        return f"Campaign('{self.title}', '{self.date_posted}', '{self.goal}')"
+
+
+class Transaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.Integer, nullable=False, default=0)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    campaign_id = db.Column(db.Integer, db.ForeignKey("campaign.id"), nullable=False)
+
+    def __repr__(self):
+        return f"Transaction('{self.donor}', '{self.date}', '{self.amount}', '{self.campaign}')"
+    
+
+
+
 
     
 

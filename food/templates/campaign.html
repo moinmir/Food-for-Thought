@@ -1,23 +1,25 @@
 {% extends "layout.html" %} {% block content %}
 <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + campaign.owner.image_file) }}">
     <div class="media-body">
         <div class="article-metadata">
-            <a class="mr-2" href="{{ url_for('users.user_posts', username = post.author.username) }}">{{ post.author.username }}</a>
-            <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small> {% if post.author == current_user %}
+            <a class="mr-2" href="{{ url_for('users.user_campaigns', username = campaign.owner.username) }}">{{ campaign.owner.username }}</a>
+            <small class="text-muted">{{ campaign.date_posted.strftime('%Y-%m-%d') }}</small> {% if campaign.owner == current_user %}
             <div>
-                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('campaigns.update_campaign', campaign_id=campaign.id) }}">Update</a>
                 <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                <p class="text-secondary">Raised ${{ current_user.orders }}</p>
+                <p class="text-secondary">Raised ${{ campaign.raised }}</p>
             </div>
             {% else %}
             <div>
-                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('transactions.donate', post_id=post.id) }}">Donate</a>
+                <p class="text-secondary"><b>Campaign Goal: ${{ campaign.goal}}</b></p>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('transactions.donate', campaign_id=campaign.id) }}">Donate</a>
             </div>
             {% endif %}
         </div>
-        <h2 class="article-title">{{ post.title }}</h2>
-        <p class="article-content">{{ post.content }}</p>
+        <h2 class="article-title">{{ campaign.title }}</h2>
+        <p class="article-content">{{ campaign.content }}</p>
+
     </div>
 </article>
 <!-- Modal -->
@@ -25,14 +27,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Delete Campaign?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+                <form action="{{ url_for('campaigns.delete_campaign', campaign_id=campaign.id) }}" method="POST">
                     <input class="btn btn-danger" type="submit" value="Delete">
                 </form>
             </div>

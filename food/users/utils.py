@@ -4,6 +4,7 @@ from PIL import Image
 from flask import url_for, current_app
 from flask_mail import Message
 from food import mail
+from flask_login import current_user
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
@@ -18,7 +19,7 @@ def save_picture(form_picture):
 
     return picture_fn
 
-
+# sends password reset email
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message(
@@ -32,3 +33,5 @@ def send_reset_email(user):
 If you did not make this request, ignore this email and no changes will be made.
 '''
     mail.send(msg)
+
+
